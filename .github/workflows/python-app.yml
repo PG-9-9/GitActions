@@ -1,0 +1,38 @@
+name: Python CI
+
+# Trigger the workflow on push or pull request
+# basically based on the events we can trigger the workflow
+on:
+  push:
+    branches: 
+        - main
+  pull_request:
+    branches: 
+        - main
+
+# Jobs are the main building block of a workflow run
+jobs:
+    test:
+        # The type of runner that the job will run on, its the container where the job will run
+        runs-on: ubuntu-latest
+
+        # Steps represent a sequence of tasks that will be
+        steps:
+            - name : Checkout code
+              uses: actions/checkout@v2 # Prebuilt action to checkout the code, from github actions
+
+            - name: Set up Python 3.8
+              uses: actions/setup-python@v2
+              with:
+                    python-version: 3.8
+
+            - name: Install dependencies
+              run: |
+                    python -m pip install --upgrade pip
+                    pip install -r requirements.txt
+            
+            - name: Run tests
+              run: pytest # Looks for test_*.py or *_test.py files in the current directory and its subdirectories
+                        
+        
+        # Steps represent a sequence of tasks that will be executed as
